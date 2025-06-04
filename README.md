@@ -113,5 +113,9 @@ If you are developing a production application, we recommend using TypeScript wi
 
 ## Downloading cards
 
-In the editor view you can export your card preview as a PNG image. Click **Download PNG** below the preview to save the card.
-Use **Save Card** to store the design on Supabase and then **Share Link** to copy a URL like `/card/{id}` which loads the saved message and template.
+In the editor view you can export your card preview as a PNG image. Click **Download PNG** below the preview to save the card. You can also copy a shareable URL with **Share Link** which preserves the message and template in the query string.
+You can manually open the editor at `/editor?message=Hello&template=birthday` to load a specific card.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
