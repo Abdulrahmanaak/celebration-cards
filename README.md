@@ -10,3 +10,7 @@ Currently, two official plugins are available:
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## Downloading cards
+
+In the editor view you can export your card preview as a PNG image. Click **Download PNG** below the preview to save the card. You can also copy a shareable URL with **Share Link** which preserves the message and template in the query string.
