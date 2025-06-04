@@ -1,12 +1,17 @@
 import heroImg from './assets/hero.svg'
 import './App.css'
 import CardEditor from './components/CardEditor.jsx'
+import CardViewer from './components/CardViewer.jsx'
 
 function App() {
-  if (window.location.pathname.startsWith('/editor')) {
+  const pathname = window.location.pathname
+  if (pathname.startsWith('/editor')) {
     return <CardEditor />
   }
-
+  if (pathname.startsWith('/card/')) {
+    const id = pathname.replace('/card/', '')
+    return <CardViewer id={id} />
+  }
   return (
     <div className="text-center mt-10">
       <header className="mb-8">

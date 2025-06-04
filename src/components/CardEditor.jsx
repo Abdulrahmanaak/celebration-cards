@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { toPng } from '../utils/toPng'
+import supabase from '../utils/supabaseClient.js'
 import birthdayImg from '../assets/templates/birthday.svg'
 import congratsImg from '../assets/templates/congrats.svg'
 import holidayImg from '../assets/templates/holiday.svg'
@@ -13,6 +14,7 @@ function CardEditor() {
 
   const [message, setMessage] = useState('')
   const [template, setTemplate] = useState(templates[0].id)
+  const [cardId, setCardId] = useState(null)
   const cardRef = useRef(null)
 
   useEffect(() => {
@@ -36,8 +38,28 @@ function CardEditor() {
     }
   }
 
+  const handleSave = async () => {
+    const { data, error } = await supabase
+      .from('cards')
+      .insert({ template, message, placeholder_settings: {}, download_count: 0 })
+      .select('id')
+      .single()
+    if (error) {
+      console.error('Failed to save card', error)
+      alert('Failed to save card')
+      return null
+    }
+    setCardId(data.id)
+    return data.id
+  }
+
   const handleShare = async () => {
-    const url = `${window.location.origin}/editor?message=${encodeURIComponent(message)}&template=${encodeURIComponent(template)}`
+    let id = cardId
+    if (!id) {
+      id = await handleSave()
+    }
+    if (!id) return
+    const url = `${window.location.origin}/card/${id}`
     try {
       await navigator.clipboard.writeText(url)
       alert('Link copied to clipboard!')
@@ -93,6 +115,13 @@ function CardEditor() {
           onClick={handleDownload}
         >
           Download PNG
+        </button>
+        <button
+          type="button"
+          className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600"
+          onClick={handleSave}
+        >
+          Save Card
         </button>
         <button
           type="button"

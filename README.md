@@ -13,6 +13,27 @@ npm run dev
 
 The site will be available at http://localhost:5173 by default.
 
+### Environment variables
+
+Create a `.env` file with the following variables for your Supabase project:
+
+```bash
+VITE_SUPABASE_URL=<your-supabase-url>
+VITE_SUPABASE_ANON_KEY=<your-anon-key>
+```
+
+You must also create a `cards` table in Supabase:
+
+```sql
+create table cards (
+  id uuid primary key default uuid_generate_v4(),
+  template text not null,
+  message text,
+  placeholder_settings jsonb default '{}'::jsonb,
+  download_count integer default 0
+);
+```
+
 ## Directory structure
 
 ```
@@ -44,5 +65,5 @@ If you are developing a production application, we recommend using TypeScript wi
 
 ## Downloading cards
 
-In the editor view you can export your card preview as a PNG image. Click **Download PNG** below the preview to save the card. You can also copy a shareable URL with **Share Link** which preserves the message and template in the query string.
-You can manually open the editor at `/editor?message=Hello&template=birthday` to load a specific card.
+In the editor view you can export your card preview as a PNG image. Click **Download PNG** below the preview to save the card.
+Use **Save Card** to store the design on Supabase and then **Share Link** to copy a URL like `/card/{id}` which loads the saved message and template.
