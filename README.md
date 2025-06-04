@@ -16,7 +16,7 @@ The site will be available at http://localhost:5173 by default.
 ## Directory structure
 
 ```
-celebration-cards/
+./
 ├─ index.html          # entry HTML
 ├─ public/             # static assets served as-is
 ├─ src/                # application source
