@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { toPng } from '../utils/toPng'
+import supabase from '../utils/supabaseClient.js'
 import birthdayImg from '../assets/templates/birthday.svg'
 import congratsImg from '../assets/templates/congrats.svg'
 import holidayImg from '../assets/templates/holiday.svg'
@@ -12,18 +13,8 @@ function CardEditor() {
   ]
 
   const [template, setTemplate] = useState(templates[0].id)
-  const [placeholders, setPlaceholders] = useState([
-    {
-      id: 1,
-      x: 100,
-      y: 100,
-      text: 'Name',
-      font: 'Arial',
-      size: 24,
-      color: '#000000',
-    },
-  ])
-  const [dragging, setDragging] = useState(null)
+  const [cardId, setCardId] = useState(null)
+
   const cardRef = useRef(null)
 
   const handleAdd = () => {
@@ -81,10 +72,27 @@ function CardEditor() {
     }
   }
 
+  const handleSave = async () => {
+    const { data, error } = await supabase
+      .from('cards')
+      .insert({ template, message, placeholder_settings: {}, download_count: 0 })
+      .select('id')
+      .single()
+    if (error) {
+      console.error('Failed to save card', error)
+      alert('Failed to save card')
+      return null
+    }
+    setCardId(data.id)
+    return data.id
+  }
+
   const handleShare = async () => {
-    const id = Date.now().toString(36)
-    const data = { template, placeholders }
-    localStorage.setItem(`card-${id}`, JSON.stringify(data))
+    let id = cardId
+    if (!id) {
+      id = await handleSave()
+    }
+    if (!id) return
     const url = `${window.location.origin}/card/${id}`
     try {
       await navigator.clipboard.writeText(url)
@@ -184,6 +192,13 @@ function CardEditor() {
           onClick={handleDownload}
         >
           Download PNG
+        </button>
+        <button
+          type="button"
+          className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600"
+          onClick={handleSave}
+        >
+          Save Card
         </button>
         <button
           type="button"

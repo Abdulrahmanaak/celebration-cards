@@ -4,14 +4,14 @@ import CardEditor from './components/CardEditor.jsx'
 import CardViewer from './components/CardViewer.jsx'
 
 function App() {
-  const path = window.location.pathname
-  if (path.startsWith('/editor')) {
+  const pathname = window.location.pathname
+  if (pathname.startsWith('/editor')) {
     return <CardEditor />
   }
-  if (path.startsWith('/card/')) {
-    return <CardViewer />
+  if (pathname.startsWith('/card/')) {
+    const id = pathname.replace('/card/', '')
+    return <CardViewer id={id} />
   }
-
   return (
     <div className="text-center mt-10">
       <header className="mb-8">
