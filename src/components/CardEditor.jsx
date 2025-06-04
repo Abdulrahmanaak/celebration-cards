@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { toPng } from 'html-to-image'
 import birthdayImg from '../assets/templates/birthday.svg'
 import congratsImg from '../assets/templates/congrats.svg'
 import holidayImg from '../assets/templates/holiday.svg'
@@ -12,6 +13,38 @@ function CardEditor() {
 
   const [message, setMessage] = useState('')
   const [template, setTemplate] = useState(templates[0].id)
+  const cardRef = useRef(null)
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const m = params.get('message')
+    const t = params.get('template')
+    if (m) setMessage(m)
+    if (t && templates.some((tmp) => tmp.id === t)) setTemplate(t)
+  }, [])
+
+  const handleDownload = async () => {
+    if (!cardRef.current) return
+    try {
+      const dataUrl = await toPng(cardRef.current)
+      const link = document.createElement('a')
+      link.download = 'card.png'
+      link.href = dataUrl
+      link.click()
+    } catch (err) {
+      console.error('Failed to export image', err)
+    }
+  }
+
+  const handleShare = async () => {
+    const url = `${window.location.origin}/editor?message=${encodeURIComponent(message)}&template=${encodeURIComponent(template)}`
+    try {
+      await navigator.clipboard.writeText(url)
+      alert('Link copied to clipboard!')
+    } catch {
+      alert(`Share this link: ${url}`)
+    }
+  }
 
   return (
     <div className="max-w-2xl mx-auto p-4">
@@ -42,7 +75,8 @@ function CardEditor() {
         </select>
       </div>
       <h2 className="text-xl font-bold mb-2">Preview</h2>
-      <div className="border rounded overflow-hidden relative">
+      <div ref={cardRef} className="border rounded overflow-hidden relative">
+
         <img
           src={templates.find((t) => t.id === template).src}
           alt={template}
@@ -52,7 +86,22 @@ function CardEditor() {
           {message || 'Your message here'}
         </div>
       </div>
-    </div>
+      <div className="mt-4 flex gap-2">
+        <button
+          type="button"
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          onClick={handleDownload}
+        >
+          Download PNG
+        </button>
+        <button
+          type="button"
+          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+          onClick={handleShare}
+        >
+          Share Link
+        </button>
+      </div>
   )
 }
 

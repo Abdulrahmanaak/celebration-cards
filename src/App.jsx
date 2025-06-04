@@ -3,7 +3,7 @@ import './App.css'
 import CardEditor from './components/CardEditor.jsx'
 
 function App() {
-  if (window.location.pathname === '/editor') {
+  if (window.location.pathname.startsWith('/editor')) {
     return <CardEditor />
   }
 
