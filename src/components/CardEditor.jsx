@@ -14,6 +14,18 @@ function CardEditor() {
 
   const [template, setTemplate] = useState(templates[0].id)
   const [cardId, setCardId] = useState(null)
+  const [placeholders, setPlaceholders] = useState([
+    {
+      id: 1,
+      x: 100,
+      y: 100,
+      text: 'Name',
+      font: 'Arial',
+      size: 24,
+      color: '#000000',
+    },
+  ])
+  const [dragging, setDragging] = useState(null)
 
   const cardRef = useRef(null)
 
@@ -62,9 +74,11 @@ function CardEditor() {
   const handleDownload = async () => {
     if (!cardRef.current) return
     try {
-      const cardId = `${template}:${message}`
-      await fetch(`/api/cards/${encodeURIComponent(cardId)}/increment`, { method: 'POST' })
-      // Wait for count to be incremented before creating the PNG
+      if (cardId) {
+        await fetch(`/api/cards/${encodeURIComponent(cardId)}/increment`, {
+          method: 'POST',
+        })
+      }
       const dataUrl = await toPng(cardRef.current)
       const link = document.createElement('a')
       link.download = 'card.png'
@@ -78,7 +92,11 @@ function CardEditor() {
   const handleSave = async () => {
     const { data, error } = await supabase
       .from('cards')
-      .insert({ template, message, placeholder_settings: {}, download_count: 0 })
+      .insert({
+        template,
+        placeholder_settings: placeholders,
+        download_count: 0,
+      })
       .select('id')
       .single()
     if (error) {
