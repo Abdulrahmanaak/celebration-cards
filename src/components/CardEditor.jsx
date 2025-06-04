@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { toPng } from 'html-to-image'
+import { toPng } from '../utils/toPng'
 import birthdayImg from '../assets/templates/birthday.svg'
 import congratsImg from '../assets/templates/congrats.svg'
 import holidayImg from '../assets/templates/holiday.svg'
