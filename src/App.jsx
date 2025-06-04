@@ -13,7 +13,6 @@ function App() {
   if (path.startsWith('/admin')) {
     return <AdminDashboard />
   }
-
   return (
     <div className="text-center mt-10">
       <header className="mb-8">
