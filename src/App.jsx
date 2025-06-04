@@ -1,10 +1,17 @@
 import heroImg from './assets/hero.svg'
 import './App.css'
 import CardEditor from './components/CardEditor.jsx'
+import AdminDashboard from './components/AdminDashboard.jsx'
 
 function App() {
-  if (window.location.pathname.startsWith('/editor')) {
+  const path = window.location.pathname
+
+  if (path.startsWith('/editor')) {
     return <CardEditor />
+  }
+
+  if (path.startsWith('/admin')) {
+    return <AdminDashboard />
   }
 
   return (
