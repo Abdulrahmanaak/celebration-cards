@@ -26,6 +26,9 @@ function CardEditor() {
   const handleDownload = async () => {
     if (!cardRef.current) return
     try {
+      const cardId = `${template}:${message}`
+      await fetch(`/api/cards/${encodeURIComponent(cardId)}/increment`, { method: 'POST' })
+      // Wait for count to be incremented before creating the PNG
       const dataUrl = await toPng(cardRef.current)
       const link = document.createElement('a')
       link.download = 'card.png'
