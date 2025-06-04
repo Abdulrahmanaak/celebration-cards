@@ -1,9 +1,18 @@
 import { useState, useEffect, useRef } from 'react'
 import { toPng } from 'html-to-image'
+import birthdayImg from '../assets/templates/birthday.svg'
+import congratsImg from '../assets/templates/congrats.svg'
+import holidayImg from '../assets/templates/holiday.svg'
 
 function CardEditor() {
+  const templates = [
+    { id: 'birthday', label: 'Birthday', src: birthdayImg },
+    { id: 'congrats', label: 'Congrats', src: congratsImg },
+    { id: 'holiday', label: 'Holiday', src: holidayImg },
+  ]
+
   const [message, setMessage] = useState('')
-  const [template, setTemplate] = useState('birthday')
+  const [template, setTemplate] = useState(templates[0].id)
   const cardRef = useRef(null)
 
   useEffect(() => {
@@ -11,14 +20,8 @@ function CardEditor() {
     const m = params.get('message')
     const t = params.get('template')
     if (m) setMessage(m)
-    if (t) setTemplate(t)
+    if (t && templates.some((tmp) => tmp.id === t)) setTemplate(t)
   }, [])
-
-  const templateStyles = {
-    birthday: 'bg-pink-200',
-    congrats: 'bg-green-200',
-    holiday: 'bg-red-200',
-  }
 
   const handleDownload = async () => {
     if (!cardRef.current) return
@@ -64,17 +67,23 @@ function CardEditor() {
           onChange={(e) => setTemplate(e.target.value)}
           className="w-full border rounded p-2"
         >
-          <option value="birthday">Birthday</option>
-          <option value="congrats">Congrats</option>
-          <option value="holiday">Holiday</option>
+          {templates.map((t) => (
+            <option key={t.id} value={t.id}>
+              {t.label}
+            </option>
+          ))}
         </select>
       </div>
       <h2 className="text-xl font-bold mb-2">Preview</h2>
-      <div
-        ref={cardRef}
-        className={`border rounded p-6 min-h-[150px] flex items-center justify-center text-xl font-bold ${templateStyles[template]}`}
-      >
-        {message || 'Your message here'}
+      <div ref={cardRef} className="border rounded overflow-hidden relative">
+        <img
+          src={templates.find((t) => t.id === template).src}
+          alt={template}
+          className="w-full h-auto"
+        />
+        <div className="absolute inset-0 flex items-center justify-center text-xl font-bold">
+          {message || 'Your message here'}
+        </div>
       </div>
       <div className="mt-4 flex gap-2">
         <button
