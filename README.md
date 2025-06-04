@@ -1,22 +1,73 @@
-# React + Vite
+# Celebration Cards
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Celebration Cards is a tiny React + Vite application for creating, previewing and
+sharing greeting cards. Users can type their own message, choose from one of the
+SVG templates and then either download the design as a PNG or share a link that
+recreates the card. The project serves as a demonstration of how to build a
+simple editor workflow in React.
+
+## Creating and viewing cards
+
+1. Launch the development server (see the setup instructions below).
+2. Open `http://localhost:5173` and click **Create Your Card**.
+3. Fill out the **Message** field and pick a **Template**.
+4. Use **Download PNG** to save the design or **Share Link** to copy a URL that
+   loads the same card.
+
+The editor can also be opened directly at `/editor` with optional query
+parameters, e.g. `/editor?message=Hello&template=birthday`.
 
 ## Setup
 
-Use `npm` to install dependencies and start the development server:
+1. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+2. **Set Supabase environment variables**
+
+   Create a `.env.local` file in the project root and define the following keys:
+
+   ```bash
+   VITE_SUPABASE_URL=<your-supabase-url>
+   VITE_SUPABASE_ANON_KEY=<your-supabase-anon-key>
+   ```
+
+3. **Run the development server**
+
+   ```bash
+   npm run dev
+   ```
+
+   The site will be available at [http://localhost:5173](http://localhost:5173)
+   by default.
+
+### Environment variables
+
+Create a `.env` file with the following variables for your Supabase project:
 
 ```bash
-npm install
-npm run dev
+VITE_SUPABASE_URL=<your-supabase-url>
+VITE_SUPABASE_ANON_KEY=<your-anon-key>
 ```
 
-The site will be available at http://localhost:5173 by default.
+You must also create a `cards` table in Supabase:
+
+```sql
+create table cards (
+  id uuid primary key default uuid_generate_v4(),
+  template text not null,
+  message text,
+  placeholder_settings jsonb default '{}'::jsonb,
+  download_count integer default 0
+);
+```
 
 ## Directory structure
 
 ```
-celebration-cards/
+./
 ├─ index.html          # entry HTML
 ├─ public/             # static assets served as-is
 ├─ src/                # application source
@@ -27,11 +78,29 @@ celebration-cards/
 └─ tailwind.config.js  # Tailwind setup
 ```
 
-## Creating new templates
+## Adding new SVG templates
 
-Card templates are stored as SVG files in `src/assets/templates`. To add a new
-design, place an SVG file in this folder and import it in
-`src/components/CardEditor.jsx` by extending the `templates` array.
+Card templates are stored as SVG files in `src/assets/templates`.
+
+1. Add your `.svg` file to this folder.
+2. Edit `src/components/CardEditor.jsx` and import the file at the top:
+
+   ```jsx
+   import newDesignImg from '../assets/templates/new-design.svg'
+   ```
+
+3. Extend the `templates` array with an entry for the new design:
+
+   ```jsx
+   const templates = [
+     { id: 'birthday', label: 'Birthday', src: birthdayImg },
+     // ...other templates
+     { id: 'new-design', label: 'New Design', src: newDesignImg },
+   ]
+   ```
+
+4. Restart the development server and the new template will appear in the
+   template selector.
 
 Currently, two official plugins are available:
 
@@ -50,4 +119,3 @@ You can manually open the editor at `/editor?message=Hello&template=birthday` to
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
-
