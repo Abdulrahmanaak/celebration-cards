@@ -1,14 +1,17 @@
 import { useState } from 'react'
+import birthdayImg from '../assets/templates/birthday.svg'
+import congratsImg from '../assets/templates/congrats.svg'
+import holidayImg from '../assets/templates/holiday.svg'
 
 function CardEditor() {
-  const [message, setMessage] = useState('')
-  const [template, setTemplate] = useState('birthday')
+  const templates = [
+    { id: 'birthday', label: 'Birthday', src: birthdayImg },
+    { id: 'congrats', label: 'Congrats', src: congratsImg },
+    { id: 'holiday', label: 'Holiday', src: holidayImg },
+  ]
 
-  const templateStyles = {
-    birthday: 'bg-pink-200',
-    congrats: 'bg-green-200',
-    holiday: 'bg-red-200',
-  }
+  const [message, setMessage] = useState('')
+  const [template, setTemplate] = useState(templates[0].id)
 
   return (
     <div className="max-w-2xl mx-auto p-4">
@@ -31,13 +34,24 @@ function CardEditor() {
           onChange={(e) => setTemplate(e.target.value)}
           className="w-full border rounded p-2"
         >
-          <option value="birthday">Birthday</option>
-          <option value="congrats">Congrats</option>
-          <option value="holiday">Holiday</option>
+          {templates.map((t) => (
+            <option key={t.id} value={t.id}>
+              {t.label}
+            </option>
+          ))}
         </select>
       </div>
       <h2 className="text-xl font-bold mb-2">Preview</h2>
-      <div className={`border rounded p-6 min-h-[150px] flex items-center justify-center text-xl font-bold ${templateStyles[template]}`}>{message || 'Your message here'}</div>
+      <div className="border rounded overflow-hidden relative">
+        <img
+          src={templates.find((t) => t.id === template).src}
+          alt={template}
+          className="w-full h-auto"
+        />
+        <div className="absolute inset-0 flex items-center justify-center text-xl font-bold">
+          {message || 'Your message here'}
+        </div>
+      </div>
     </div>
   )
 }
