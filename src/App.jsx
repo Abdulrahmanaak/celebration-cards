@@ -1,19 +1,16 @@
 import heroImg from './assets/hero.svg'
 import './App.css'
 import CardEditor from './components/CardEditor.jsx'
-import CardViewer from './components/CardViewer.jsx'
 import AdminDashboard from './components/AdminDashboard.jsx'
 
-
 function App() {
-  const pathname = window.location.pathname
-  if (pathname.startsWith('/editor')) {
+  const path = window.location.pathname
+
+  if (path.startsWith('/editor')) {
     return <CardEditor />
   }
-  if (window.location.pathname.startsWith('/view')) {
-    return <CardViewer />
-  }
-  if (window.location.pathname.startsWith('/admin')) {
+
+  if (path.startsWith('/admin')) {
     return <AdminDashboard />
   }
   return (
