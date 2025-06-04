@@ -2,6 +2,37 @@
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
+## Setup
+
+Use `npm` to install dependencies and start the development server:
+
+```bash
+npm install
+npm run dev
+```
+
+The site will be available at http://localhost:5173 by default.
+
+## Directory structure
+
+```
+celebration-cards/
+├─ index.html          # entry HTML
+├─ public/             # static assets served as-is
+├─ src/                # application source
+│  ├─ assets/          # images and card templates
+│  ├─ components/      # React components
+│  ├─ App.jsx
+│  └─ main.jsx
+└─ tailwind.config.js  # Tailwind setup
+```
+
+## Creating new templates
+
+Card templates are stored as SVG files in `src/assets/templates`. To add a new
+design, place an SVG file in this folder and import it in
+`src/components/CardEditor.jsx` by extending the `templates` array.
+
 Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
