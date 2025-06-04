@@ -24,6 +24,7 @@ function CardViewer() {
     const t = params.get('template')
     if (m) setMessage(m)
     if (t && templates[t]) setTemplate(t)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
