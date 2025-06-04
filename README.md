@@ -67,7 +67,7 @@ create table cards (
 ## Directory structure
 
 ```
-celebration-cards/
+./
 ├─ index.html          # entry HTML
 ├─ public/             # static assets served as-is
 ├─ src/                # application source
