@@ -102,6 +102,7 @@ function CardEditor() {
           Share Link
         </button>
       </div>
+      </div>
   )
 }
 
