@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { toPng } from '../utils/toPng'
+
 import birthdayImg from '../assets/templates/birthday.svg'
 import congratsImg from '../assets/templates/congrats.svg'
 import holidayImg from '../assets/templates/holiday.svg'
 
 function CardViewer() {
+
   const templates = {
     birthday: birthdayImg,
     congrats: congratsImg,
@@ -75,6 +77,7 @@ function CardViewer() {
         </button>
         <div className="text-sm text-gray-700">Downloads: {count}</div>
       </div>
+
     </div>
   )
 }

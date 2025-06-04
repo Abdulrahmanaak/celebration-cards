@@ -4,8 +4,10 @@ import CardEditor from './components/CardEditor.jsx'
 import CardViewer from './components/CardViewer.jsx'
 import AdminDashboard from './components/AdminDashboard.jsx'
 
+
 function App() {
-  if (window.location.pathname.startsWith('/editor')) {
+  const pathname = window.location.pathname
+  if (pathname.startsWith('/editor')) {
     return <CardEditor />
   }
   if (window.location.pathname.startsWith('/view')) {
@@ -14,7 +16,6 @@ function App() {
   if (window.location.pathname.startsWith('/admin')) {
     return <AdminDashboard />
   }
-
   return (
     <div className="text-center mt-10">
       <header className="mb-8">
