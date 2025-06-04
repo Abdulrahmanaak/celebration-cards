@@ -34,7 +34,7 @@ function CardEditor() {
   }
 
   const handleShare = async () => {
-    const url = `${window.location.origin}/editor?message=${encodeURIComponent(message)}&template=${template}`
+    const url = `${window.location.origin}/editor?message=${encodeURIComponent(message)}&template=${encodeURIComponent(template)}`
     try {
       await navigator.clipboard.writeText(url)
       alert('Link copied to clipboard!')
