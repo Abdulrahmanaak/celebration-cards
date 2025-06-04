@@ -1,7 +1,11 @@
 import heroImg from './assets/hero.svg'
 import './App.css'
+import CardEditor from './components/CardEditor.jsx'
 
 function App() {
+  if (window.location.pathname === '/editor') {
+    return <CardEditor />
+  }
 
   return (
     <div className="text-center mt-10">
