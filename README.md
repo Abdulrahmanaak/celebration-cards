@@ -14,3 +14,4 @@ If you are developing a production application, we recommend using TypeScript wi
 ## Downloading cards
 
 In the editor view you can export your card preview as a PNG image. Click **Download PNG** below the preview to save the card. You can also copy a shareable URL with **Share Link** which preserves the message and template in the query string.
+You can manually open the editor at `/editor?message=Hello&template=birthday` to load a specific card.
