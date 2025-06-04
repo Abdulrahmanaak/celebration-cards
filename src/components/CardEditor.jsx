@@ -76,6 +76,7 @@ function CardEditor() {
       </div>
       <h2 className="text-xl font-bold mb-2">Preview</h2>
       <div ref={cardRef} className="border rounded overflow-hidden relative">
+
         <img
           src={templates.find((t) => t.id === template).src}
           alt={template}
@@ -101,7 +102,6 @@ function CardEditor() {
           Share Link
         </button>
       </div>
-    </div>
   )
 }
 
